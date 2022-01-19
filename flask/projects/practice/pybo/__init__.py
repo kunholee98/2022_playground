@@ -25,8 +25,9 @@ def create_app():
     # 새로운 URL이 필요할 때마다 create_app에 추가해주어야하는 불편함을 개선하고자 Blueprint 클래스를 이용할 수 있다.
     # @app.route('/')
     
-    # blueprint
-    from .views import main_views
+    # blueprint 모듈을 이용하면 bp 객체를 등록만 하면 쉽게 라우트를 확장시킬 수 있다.
+    from .views import main_views, question_views
     app.register_blueprint(main_views.bp)
+    app.register_blueprint(question_views.bp)
 
     return app
