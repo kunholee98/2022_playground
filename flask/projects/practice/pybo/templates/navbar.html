@@ -1,0 +1,24 @@
+<!-- 내비게이션 바 -->
+<nav>
+  <a href="{{ url_for('main.index') }}">Pybo</a>
+  <button
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarNav"
+    aria-controls="navbarNav"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span></span>
+  </button>
+  <div id="navbarNav">
+    <ul>
+      <li>
+        <a href="#">계정생성</a>
+      </li>
+      <li>
+        <a href="#">로그인</a>
+      </li>
+    </ul>
+  </div>
+</nav>

@@ -12,8 +12,12 @@ bp = Blueprint('question', __name__, url_prefix="/question")
 
 @bp.route('/list/')
 def _list():
+    # pagination을 위해 페이지 값을 얻어온다.
+    # localhost:5000/question/list/?page=5 으로 GET 방식으로 받아올 때 page를 저장.
+    page = request.args.get('page', type=int, default=1)
     # Question 모델에서 createdAt의 내림차순으로 정렬하여 쿼리를 불러온다.
     question_list = Question.query.order_by(Question.createdAt.desc())
+    question_list = question_list.paginate(page, per_page=10)
     # render_template: 템플릿 파일을 화면으로 렌더링하는 함수 (여기서 템플릿 파일은 question/question_list.html 이다.)
     return render_template('question/question_list.html', question_list=question_list)
 

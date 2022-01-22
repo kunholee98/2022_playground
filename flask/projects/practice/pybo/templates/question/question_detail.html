@@ -1,5 +1,6 @@
 <!-- static 디렉터리의 style.css 파일을 연결한다. -->
 <!-- url_for 을 통해 정적 파일의 URL을 찾을 수 있다. -->
+{% extends "base.html" %} {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}" />
 
 <h1>{{ question.subject }}</h1>
@@ -30,3 +31,4 @@
   <textarea name="content" id="content" rows="15"></textarea>
   <input type="submit" value="답변 등록" />
 </form>
+{% endblock %}
