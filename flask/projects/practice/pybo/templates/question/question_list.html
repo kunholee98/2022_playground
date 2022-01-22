@@ -7,6 +7,9 @@
     <a href="{{url_for('question.detail', question_id=question.id )}}"
       >{{question.subject}}</a
     >
+    {% if question.answer_set|length > 0 %}
+    <span style="color: red">{{ question.answer_set|length }}개</span>
+    {% endif %}
     <!-- 템플릿을 이용한 필터 적용 -->
     {{ question.createdAt | datetime }}
   </li>
