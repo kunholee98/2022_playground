@@ -31,4 +31,9 @@ def create_app():
     app.register_blueprint(question_views.bp)
     app.register_blueprint(answer_views.bp)
 
+    # filter 사용
+    # flask에서 filter를 사용하고자 한다면 이를 jinja_env에 등록해줘야한다.
+    from .filter import format_datetime
+    app.jinja_env.filters['datetime'] = format_datetime
+
     return app

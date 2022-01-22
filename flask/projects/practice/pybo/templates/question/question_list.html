@@ -2,9 +2,13 @@
 <ul>
   {% for question in question_list.items %}
   <li>
+    <!-- 게시물 번호 (템플릿 이용) -->
+    {{ question_list.total - ((question_list.page - 1) * question_list.per_page) - loop.index0}}
     <a href="{{url_for('question.detail', question_id=question.id )}}"
       >{{question.subject}}</a
     >
+    <!-- 템플릿을 이용한 필터 적용 -->
+    {{ question.createdAt | datetime }}
   </li>
   {% endfor %}
 </ul>

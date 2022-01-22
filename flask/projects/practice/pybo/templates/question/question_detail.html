@@ -11,7 +11,7 @@
 <div>
   <ul>
     {% for answer in question.answer_set %}
-    <li>{{ answer.content }}</li>
+    <li>{{ answer.content }} {{ answer.createdAt | datetime }}</li>
     {% endfor %}
   </ul>
 </div>
