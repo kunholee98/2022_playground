@@ -14,6 +14,7 @@ class Question(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
     user = db.relationship('User', backref=db.backref('question_set'))
     createdAt = db.Column(db.DateTime(), nullable=False)
+    updatedAt = db.Column(db.DateTime(), nullable=True)
 
 class Answer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -26,6 +27,7 @@ class Answer(db.Model):
     user_id = db.Column('user_id', db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
     user = db.relationship('User', backref=db.backref('answer_set'))
     createdAt = db.Column(db.DateTime(), nullable=False)
+    updatedAt = db.Column(db.DateTime(), nullable=True)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)

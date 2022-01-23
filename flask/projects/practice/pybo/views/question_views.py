@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flask import Blueprint, render_template, request, url_for, g
+from flask import Blueprint, render_template, request, url_for, g, flash
 from werkzeug.utils import redirect
 
 from .. import db
@@ -40,4 +40,24 @@ def create():
         # POST 이후에는 main의 index 함수로 되돌아간다.
         return redirect(url_for('main.index'))
     # GET 또는 invalid form 일 경우에는 question_form을 다시 실행. form에는 QuestionForm을 담아서 보냄.
+    return render_template('question/question_form.html', form=form)
+
+@bp.route('/modify/<int:question_id>', methods=('GET', 'POST'))
+@login_required
+def modify(question_id):
+    question = Question.query.get_or_404(question_id)
+    if g.user != question.user:
+        flash("수정 권한이 없습니다.")
+        return redirect(url_for('question.detail', question_id=question_id))
+    if request.method == "POST":
+        form = QuestionForm();
+        # QuestionForm을 검증하여 이상이 없으면 변경된 데이터를 저장
+        if form.validate_on_submit():
+            # form 변수에 들어있는 데이터(화면에 입력되어 있는 데이터)를 question 객체에 적용
+            form.populate_obj(question)
+            question.updatedAt = datetime.now()
+            db.session.commit()
+            return redirect(url_for('question.detail', question_id=question_id))
+    else:
+        form = QuestionForm(obj=question)
     return render_template('question/question_form.html', form=form)

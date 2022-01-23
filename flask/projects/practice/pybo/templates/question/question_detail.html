@@ -11,6 +11,14 @@
   <div>{{ question.createdAt|datetime }}</div>
 </div>
 
+{% if g.user == question.user %}
+<div>
+  <a href="{{ url_for('question.modify', question_id=question.id) }}"
+    >수정하기</a
+  >
+</div>
+{% endif %}
+
 <!-- | 은 템플릿 필터. -->
 <h5>{{ question.answer_set|length }}개의 답변이 있습니다.</h5>
 <div>
