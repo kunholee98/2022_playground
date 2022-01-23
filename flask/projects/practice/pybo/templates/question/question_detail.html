@@ -28,7 +28,13 @@
   {% endfor %}
   <!-- 오류표시 End -->
   {{form.csrf_token}}
-  <textarea name="content" id="content" rows="15"></textarea>
-  <input type="submit" value="답변 등록" />
+  <div>
+    {% if not g.user %}
+    <span>답글을 남기고 싶으시면 로그인을 해주세요.</span>
+    {% else %}
+    <textarea name="content" id="content" rows="15"></textarea>
+    <input type="submit" value="답변 등록" />
+    {% endif %}
+  </div>
 </form>
 {% endblock %}

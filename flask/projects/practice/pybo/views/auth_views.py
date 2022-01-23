@@ -1,3 +1,5 @@
+# 데코레이터 함수 functools
+import functools
 # flash는 필드 자체 오류가 아닌 프로그램 논리 오류를 발생시키는 함수
 from flask import Blueprint, url_for, render_template, flash, request, session, g
 # 암호화된 비밀번호 생성하는 모듈
@@ -63,3 +65,12 @@ def login():
 def logout():
     session.clear()
     return redirect(url_for('main.index'))
+
+def login_required(view):
+    # @login_required 라는 애너테이션을 입력하면 자동적으로 이 데코레이터 함수가 먼저 실행된다.
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.user is None:
+            return redirect(url_for('auth.login'))
+        return view(**kwargs)
+    return wrapped_view

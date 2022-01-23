@@ -1,12 +1,12 @@
 from datetime import datetime
 
-from flask import Blueprint, render_template, request, url_for
+from flask import Blueprint, render_template, request, url_for, g
 from werkzeug.utils import redirect
 
 from .. import db
 from pybo.models import Question
 from ..forms import AnswerForm, QuestionForm
-
+from pybo.views.auth_views import login_required
 
 bp = Blueprint('question', __name__, url_prefix="/question")
 
@@ -29,11 +29,12 @@ def detail(question_id):
     return render_template('question/question_detail.html', question=question, form=form)
 
 @bp.route('/create', methods=('GET','POST'))
+@login_required
 def create():
     form = QuestionForm()
     # create함수로 요청된 방식이 POST이고 전송된 폼 데이터의 정합성을 점검!
     if request.method == 'POST' and form.validate_on_submit():
-        question = Question(subject=form.subject.data, content=form.content.data, createdAt=datetime.now())
+        question = Question(subject=form.subject.data, content=form.content.data, createdAt=datetime.now(), user=g.user)
         db.session.add(question)
         db.session.commit()
         # POST 이후에는 main의 index 함수로 되돌아간다.
