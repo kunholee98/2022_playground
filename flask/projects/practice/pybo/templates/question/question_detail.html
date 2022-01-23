@@ -17,6 +17,13 @@
     >수정하기</a
   >
 </div>
+<div>
+  <!-- data-uri를 쓰는 이유는 "정말로 삭제하시겠습니까?" 라는 확인창이 필요하기 때문 -->
+  <!-- 하지만 나는 쓰지 않겠다! (jQuery를 이용하는 것이 귀찮기 때문..) -->
+  <a href="{{ url_for('question.delete', question_id=question.id) }}"
+    >삭제하기</a
+  >
+</div>
 {% endif %}
 
 <!-- | 은 템플릿 필터. -->
@@ -28,7 +35,10 @@
       {{ answer.content }} {{ answer.user.username }} {{ answer.createdAt |
       datetime }}
     </li>
-    {% endfor %}
+    {% if g.user == answer.user %}
+    <a href="{{ url_for('answer.modify', answer_id=answer.id) }}">수정하기</a>
+    <a href="{{ url_for('answer.delete', answer_id=answer.id) }}">삭제하기</a>
+    {% endif %} {% endfor %}
   </ul>
 </div>
 
