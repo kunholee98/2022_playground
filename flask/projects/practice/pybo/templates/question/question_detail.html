@@ -8,7 +8,7 @@
 <div style="display: flex; justify-content: space-between">
   <div>{{ question.content }}</div>
   <div>{{ question.user.username }}</div>
-  <div>{{ question.createdAt|datetime }}</div>
+  <div>{{ question.createdAt|datetime }} {{ question.updatedAt|datetime}}</div>
 </div>
 
 {% if g.user == question.user %}
@@ -33,7 +33,7 @@
     {% for answer in question.answer_set %}
     <li>
       {{ answer.content }} {{ answer.user.username }} {{ answer.createdAt |
-      datetime }}
+      datetime }} {{ answer.updatedAt|datetime }}
     </li>
     {% if g.user == answer.user %}
     <a href="{{ url_for('answer.modify', answer_id=answer.id) }}">수정하기</a>
