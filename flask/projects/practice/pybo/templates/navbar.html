@@ -16,7 +16,9 @@
       {% if g.user %}
       <ul>
         <li>
-          <a href="#">{{ g.user.username }} (로그아웃)</a>
+          <a href="{{ url_for('auth.logout') }}"
+            >{{ g.user.username }} (로그아웃)</a
+          >
         </li>
       </ul>
       {% else %}
