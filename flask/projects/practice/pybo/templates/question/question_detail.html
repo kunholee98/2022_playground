@@ -64,12 +64,40 @@
     {% for answer in question.answer_set %}
     <li>
       {{ answer.content }} {{ answer.user.username }} {{ answer.createdAt |
-      datetime }} {{ answer.updatedAt|datetime }}
+      datetime }} {% if answer.updatedAt %} {{ answer.updatedAt|datetime }} {%
+      endif %}
     </li>
     {% if g.user == answer.user %}
     <a href="{{ url_for('answer.modify', answer_id=answer.id) }}">수정하기</a>
     <a href="{{ url_for('answer.delete', answer_id=answer.id) }}">삭제하기</a>
-    {% endif %} {% endfor %}
+    {% endif %} {% if answer.comment_set|length > 0 %}
+    <div>
+      {% for comment in answer.comment_set %}
+      <div>
+        <span style="white-space: pre-line">{{ comment.content }}</span>
+        <span>
+          - {{ comment.user.username }}, {{ comment.createdAt|datetime }} {% if
+          comment.updatedAt %} (수정:{{ comment.updatedAt|datetime }}) {% endif
+          %}
+        </span>
+        {% if g.user == comment.user %}
+        <a href="{{ url_for('comment.modify_answer', comment_id=comment.id) }}"
+          >수정</a
+        >,
+        <a href="{{ url_for('comment.delete_answer', comment_id=comment.id) }}"
+          >삭제</a
+        >
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    <div>
+      <a href="{{ url_for('comment.create_answer', answer_id=answer.id) }}"
+        ><small>댓글 추가 ..</small></a
+      >
+    </div>
+    <!-- 질문 댓글 End -->{% endfor %}
   </ul>
 </div>
 
