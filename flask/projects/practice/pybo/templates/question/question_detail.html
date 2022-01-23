@@ -5,13 +5,21 @@
 
 <h1>{{ question.subject }}</h1>
 
-<div>{{ question.content }}</div>
+<div style="display: flex; justify-content: space-between">
+  <div>{{ question.content }}</div>
+  <div>{{ question.user.username }}</div>
+  <div>{{ question.createdAt|datetime }}</div>
+</div>
+
 <!-- | 은 템플릿 필터. -->
 <h5>{{ question.answer_set|length }}개의 답변이 있습니다.</h5>
 <div>
   <ul>
     {% for answer in question.answer_set %}
-    <li>{{ answer.content }} {{ answer.createdAt | datetime }}</li>
+    <li>
+      {{ answer.content }} {{ answer.user.username }} {{ answer.createdAt |
+      datetime }}
+    </li>
     {% endfor %}
   </ul>
 </div>
