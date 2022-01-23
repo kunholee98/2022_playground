@@ -8,7 +8,10 @@
 <div style="display: flex; justify-content: space-between">
   <div>{{ question.content }}</div>
   <div>{{ question.user.username }}</div>
-  <div>{{ question.createdAt|datetime }} {{ question.updatedAt|datetime}}</div>
+  <div>
+    {{ question.createdAt|datetime }} {% if question.updatedAt %} {{
+    question.updatedAt|datetime}} {% endif %}
+  </div>
 </div>
 
 {% if g.user == question.user %}
@@ -25,6 +28,34 @@
   >
 </div>
 {% endif %}
+<!-- 질문 댓글 Start -->
+{% if question.comment_set|length > 0 %}
+<div>
+  {% for comment in question.comment_set %}
+  <div>
+    <span style="white-space: pre-line">{{ comment.content }}</span>
+    <span>
+      - {{ comment.user.username }}, {{ comment.createdAt|datetime }} {% if
+      comment.updatedAt %} (수정:{{ comment.updatedAt|datetime }}) {% endif %}
+    </span>
+    {% if g.user == comment.user %}
+    <a href="{{ url_for('comment.modify_question', comment_id=comment.id) }}"
+      >수정</a
+    >,
+    <a href="{{ url_for('comment.delete_question', comment_id=comment.id) }}"
+      >삭제</a
+    >
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+<div>
+  <a href="{{ url_for('comment.create_question', question_id=question.id) }}"
+    ><small>댓글 추가 ..</small></a
+  >
+</div>
+<!-- 질문 댓글 End -->
 
 <!-- | 은 템플릿 필터. -->
 <h5>{{ question.answer_set|length }}개의 답변이 있습니다.</h5>
