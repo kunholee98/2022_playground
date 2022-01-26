@@ -3,8 +3,16 @@
 {% extends "base.html" %} {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}" />
 
-<h1>{{ question.subject }}</h1>
-
+<div>
+  <h1>{{ question.subject }}</h1>
+  <div style="display: flex">
+    <a href="{{url_for('vote.question', question_id=question.id)}}">좋아요</a
+    ><span>{{ question.voter | length }}</span>
+  </div>
+</div>
+{% for message in get_flashed_messages() %}
+<div role="alert">{{ message }}</div>
+{% endfor %}
 <div style="display: flex; justify-content: space-between">
   <div>{{ question.content }}</div>
   <div>{{ question.user.username }}</div>

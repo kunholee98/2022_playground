@@ -1,5 +1,18 @@
 from pybo import db
 
+# 질문과 유저 간의 좋아요 N:M 관계를 알려주는 secondary table
+question_voter = db.Table(
+    'question_voter',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), primary_key=True),
+    db.Column('question_id', db.Integer, db.ForeignKey('question.id', ondelete='CASCADE'), primary_key=True)
+)
+
+answer_voter = db.Table(
+    'answer_voter',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), primary_key=True),
+    db.Column('answer_id', db.Integer, db.ForeignKey('answer.id', ondelete='CASCADE'), primary_key=True)
+)
+
 # 질문 클래스
 # String은 글자수 제한, Text는 글자수 제한 X
 class Question(db.Model):
@@ -15,6 +28,7 @@ class Question(db.Model):
     user = db.relationship('User', backref=db.backref('question_set'))
     createdAt = db.Column(db.DateTime(), nullable=False)
     updatedAt = db.Column(db.DateTime(), nullable=True)
+    voter = db.relationship('User', secondary=question_voter, backref=db.backref('question_voter_set'))
 
 class Answer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -28,6 +42,7 @@ class Answer(db.Model):
     user = db.relationship('User', backref=db.backref('answer_set'))
     createdAt = db.Column(db.DateTime(), nullable=False)
     updatedAt = db.Column(db.DateTime(), nullable=True)
+    voter = db.relationship('User', secondary=answer_voter, backref=db.backref('answer_voter_set'))
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
