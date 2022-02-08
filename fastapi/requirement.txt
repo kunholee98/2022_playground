@@ -1,0 +1,3 @@
+fastapi
+email_validator
+python-multipart
